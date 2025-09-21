@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart, registerables } from 'chart.js';
+import * as d3 from 'd3';
+
 
 @Component({
   selector: 'pb-homepage',
@@ -34,6 +36,7 @@ export class HomepageComponent implements AfterViewInit {
         });
 
         this.createChart();
+        this.createD3Chart();
       });
   }
 
@@ -43,5 +46,41 @@ export class HomepageComponent implements AfterViewInit {
       type: 'pie',
       data: this.dataSource
     });
+  }
+  private createD3Chart(): void{
+    const data = this.dataSource.datasets[0].data;
+    const labels = this.dataSource.labels;
+    const width = 400;
+    const height = 200;
+
+    const svg = d3.select('#d3Chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    const g = svg.append('g')
+      .attr('transform', 'translate(0,0)');
+
+    g.selectAll('rect')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('y', (d, i) => i * 30)
+      .attr('x', 0)
+      .attr('width', d => Number(d) * 8)
+      .attr('height', 15)
+      .attr('fill', (d, i) => this.dataSource.datasets[0].backgroundColor[i % this.dataSource.datasets[0].backgroundColor.length]);
+
+    g.selectAll('.bar-label')
+      .data(labels)
+      .enter()
+      .append('text')
+      .attr('class', 'bar-label')
+      .text(d => d)
+      .attr('x', 5)
+      .attr('y', (d, i) => i * 30 + 12)
+      .attr('text-anchor', 'start')
+      .style('font-size', '12px')
+      .style('fill', 'black');
   }
 }

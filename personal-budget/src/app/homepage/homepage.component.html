@@ -1,5 +1,5 @@
-<main class="center" id="main">
-
+  <main class="center" id="main">
+  <pb-breadcrumbs></pb-breadcrumbs>
   <div class="page-area">
 
       <pb-article>
@@ -61,7 +61,10 @@
 
       <article>
           <h1>Chart</h1>
-              <canvas #myChart width="400" height="400" style="display: block;"></canvas>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+              <div id="d3Chart" style="width: 100px; margin-bottom: 10px;"></div>
+              <canvas #myChart width="100" height="100"></canvas>
+          </div>
       </article>
 
   </div>
